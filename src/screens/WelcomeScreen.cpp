@@ -2,8 +2,8 @@
 #include <cmath>
 
 WelcomeScreen::WelcomeScreen() {
-    // Load font (resources/fonts/arial.ttf)
-    font.loadFromFile("src/resources/fonts/arial.ttf");
+    // Load font (src/resources/fonts/arial.ttf)
+    font.loadFromFile("src/resources/fonts/ARIAL.TTF");
 
     // Title
     title.setFont(font);
@@ -50,7 +50,7 @@ void WelcomeScreen::handleEvents(sf::RenderWindow& window) {
             next = FREEPLAY;
         }
         if (startBtn.isClicked(window, event)) {
-            next = MAINGAME;
+            next = GAMEMODE;
         }
         if (exitBtn.isClicked(window, event)) {
             window.close();

@@ -36,3 +36,5 @@ int main() {
 
 //     return 0;
 // }
+
+//g++ src/*.cpp src/screens/*.cpp src/core/*.cpp src/piano/*.cpp ^-I./src -I./src/screens -I./src/core -I./src/piano ^-o PianoGame -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio

@@ -21,6 +21,12 @@ PianoSystem::PianoSystem(float left, float top, float totalWidth)
     keyMap[sf::Keyboard::K] = "Chigh";
 
     loadSounds();
+    // load font used for labels (ensure the file path is correct at runtime)
+    if (!font.loadFromFile("src/resources/fonts/ARIAL.TTF")) {
+        std::cerr << "PianoSystem: failed to load font resources/fonts/ARIAL.TTF\n";
+        // continue — labels will not render but program won't crash
+    }
+
     buildKeys();
 }
 
@@ -153,6 +159,7 @@ void PianoSystem::handleEvent(sf::RenderWindow& window, const sf::Event& event) 
             return;
         }
     }
+    
 
     // Keyboard press
     if (event.type == sf::Event::KeyPressed) {
@@ -197,6 +204,15 @@ void PianoSystem::handleEvent(sf::RenderWindow& window, const sf::Event& event) 
         for (auto& wk : whiteKeys) if (wk.pressed) { wk.pressed = false; wk.rect.setFillColor(wk.whiteColor); }
     }
 }
+std::string PianoSystem::getPressedNote(const sf::Event& event) {
+    if (event.type == sf::Event::KeyPressed) {
+        auto it = keyMap.find(event.key.code);
+        if (it != keyMap.end()) {
+            return it->second;   // return mapped note name
+        }
+    }
+    return "";
+}
 
 void PianoSystem::update(float dt) {
     // simple reset of pressed flags so press flashes for one frame
@@ -221,6 +237,33 @@ void PianoSystem::draw(sf::RenderWindow& target) const {
     for (const auto& wk : whiteKeys) target.draw(wk.rect);
     // draw black keys on top
     for (const auto& bk : blackKeys) target.draw(bk.rect);
+    // draw labels
+    sf::Text label;
+    label.setFont(font);
+
+    // white key labels
+    label.setFillColor(sf::Color::Black);
+    label.setCharacterSize(20);
+
+    for (const auto& wk : whiteKeys) {
+        label.setString(wk.name);
+        float lx = wk.rect.getPosition().x + wk.rect.getSize().x * 0.35f;
+        float ly = wk.rect.getPosition().y + wk.rect.getSize().y * 0.75f;
+        label.setPosition(lx, ly);
+        target.draw(label);
+    }
+
+    // black key labels
+    label.setFillColor(sf::Color::White);
+    label.setCharacterSize(15);
+
+    for (const auto& bk : blackKeys) {
+        label.setString(bk.name);
+        float lx = bk.rect.getPosition().x + bk.rect.getSize().x * 0.15f;
+        float ly = bk.rect.getPosition().y + bk.rect.getSize().y * 0.2f;
+        label.setPosition(lx, ly);
+        target.draw(label);
+    }
 }
 
 void PianoSystem::resetAllKeyColors() {

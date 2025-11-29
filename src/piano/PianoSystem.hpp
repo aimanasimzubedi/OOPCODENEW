@@ -34,6 +34,8 @@ public:
 
     // event driven: call from your screen's event loop
     void handleEvent(sf::RenderWindow& window, const sf::Event& event);
+    // returns note name if key pressed, "" otherwise
+    std::string getPressedNote(const sf::Event& event);
 
     // update visuals / reset pressed flags if needed
     void update(float dt = 0.f);
@@ -43,6 +45,11 @@ public:
 
     // reset all key visuals to default (call when leaving a screen)
     void resetAllKeyColors();
+
+    // helpers
+    void playNote(const std::string& note);
+    const std::string* hitTestBlack(float px, float py);
+    const std::string* hitTestWhite(float px, float py);
 
 private:
     // geometry / layout
@@ -61,16 +68,13 @@ private:
     // keyboard -> note mapping
     std::unordered_map<sf::Keyboard::Key, std::string> keyMap;
 
+    sf::Font font;
+    
     // master note list used for loading
     const std::vector<std::string> noteNamesAll = {
         "C", "Csharp", "D", "Dsharp", "E", "F",
         "Fsharp", "G", "Gsharp", "A", "Asharp", "B", "Chigh"
     };
-
-    // helpers
-    void playNote(const std::string& note);
-    const std::string* hitTestBlack(float px, float py);
-    const std::string* hitTestWhite(float px, float py);
 };
 
 #endif // PIANO_SYSTEM_HPP

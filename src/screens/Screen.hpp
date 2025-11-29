@@ -8,10 +8,14 @@ enum ScreenID {
     NONE,
     WELCOME,
     FREEPLAY,
-    MAINGAME
+    MAINGAME,
+    GAMEMODE,
+    RESULT
 };
 
 class Screen {
+protected:
+    ScreenID goTo = NONE;
 public:
     virtual ~Screen() {}
     virtual void handleEvents(sf::RenderWindow& window) = 0;

@@ -1,7 +1,7 @@
 #include "ResultScreen.hpp"
 
-ResultScreen::ResultScreen(int score, float accuracy, int combo)
-    : finalScore(score), finalAccuracy(accuracy), maxCombo(combo)
+ResultScreen::ResultScreen(int score, float accuracy, int combo, float time)
+    : finalScore(score), finalAccuracy(accuracy), maxCombo(combo), finalTime(time)
 {
     // FONT + TITLE
     font.loadFromFile("src/resources/fonts/ARIAL.TTF");
@@ -19,20 +19,22 @@ ResultScreen::ResultScreen(int score, float accuracy, int combo)
     scoreText.setFont(font);
     scoreText.setCharacterSize(32);
     scoreText.setFillColor(sf::Color(230, 230, 255));
-    scoreText.setString("Score: " + std::to_string(finalScore));
     scoreText.setPosition(200.f, 170.f);
 
     accuracyText.setFont(font);
     accuracyText.setCharacterSize(32);
     accuracyText.setFillColor(sf::Color(230, 230, 255));
-    accuracyText.setString("Accuracy: " + std::to_string((int)finalAccuracy) + "%");
     accuracyText.setPosition(200.f, 230.f);
 
     comboText.setFont(font);
     comboText.setCharacterSize(32);
     comboText.setFillColor(sf::Color(230, 230, 255));
-    comboText.setString("Max Combo: " + std::to_string(maxCombo));
     comboText.setPosition(200.f, 290.f);
+
+    timeText.setFont(font);
+    timeText.setCharacterSize(32);
+    timeText.setFillColor(sf::Color(230, 230, 255));
+    timeText.setPosition(200.f, 350.f);
 
     // BUTTONS
     backBtn = Button({200, 60}, {50, 450}, font, "Main Menu");
@@ -46,16 +48,22 @@ ResultScreen::ResultScreen(int score, float accuracy, int combo)
     for (int i = 0; i < 12; i++) {
         sf::CircleShape c(5 + rand() % 5);
         c.setFillColor(sf::Color(255, 255, 255, 40));
-        c.setPosition(static_cast<float>(rand() % 700), static_cast<float>(rand() % 600));
+        c.setPosition(static_cast<float>(rand() % 700),
+                      static_cast<float>(rand() % 600));
         particles.push_back(c);
     }
+
+    // Set texts from initial values
+    scoreText.setString("Score: " + std::to_string(finalScore));
+    accuracyText.setString("Accuracy: " + std::to_string((int)finalAccuracy) + "%");
+    comboText.setString("Max Combo: " + std::to_string(maxCombo));
+    timeText.setString("Time Taken: " + std::to_string((int)finalTime) + "s");
 }
 
 void ResultScreen::handleEvents(sf::RenderWindow& window) {
     sf::Event event;
 
     while (window.pollEvent(event)) {
-
         if (event.type == sf::Event::Closed)
             window.close();
 
@@ -63,7 +71,7 @@ void ResultScreen::handleEvents(sf::RenderWindow& window) {
             goTo = WELCOME;
 
         if (retryBtn.isClicked(window, event))
-            goTo = GAMEPLAY;   // your teammate will define GAMEPLAY screen
+            goTo = GAMEMODE;
     }
 
     backBtn.setHoverColor(backBtn.isHovered(window));
@@ -79,6 +87,18 @@ void ResultScreen::update() {
     }
 }
 
+void ResultScreen::setResults(int score, float accuracy, int combo, float time) {
+    finalScore = score;
+    finalAccuracy = accuracy;
+    maxCombo = combo;
+    finalTime = time;   //
+
+    scoreText.setString("Score: " + std::to_string(finalScore));
+    accuracyText.setString("Accuracy: " + std::to_string((int)finalAccuracy) + "%");
+    comboText.setString("Max Combo: " + std::to_string(maxCombo));
+    timeText.setString("Time Taken: " + std::to_string((int)finalTime) + "s");
+}
+
 void ResultScreen::draw(sf::RenderWindow& window) {
     window.draw(gradient);
 
@@ -89,6 +109,7 @@ void ResultScreen::draw(sf::RenderWindow& window) {
     window.draw(scoreText);
     window.draw(accuracyText);
     window.draw(comboText);
+    window.draw(timeText);
 
     backBtn.draw(window);
     retryBtn.draw(window);
