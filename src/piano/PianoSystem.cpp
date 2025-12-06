@@ -5,7 +5,7 @@
 PianoSystem::PianoSystem(float left, float top, float totalWidth)
     : x(left), y(top), width(totalWidth)
 {
-    // keyboard mapping (B choice)
+    // keyboard mapping 
     keyMap[sf::Keyboard::A] = "C";
     keyMap[sf::Keyboard::W] = "Csharp";
     keyMap[sf::Keyboard::S] = "D";
@@ -24,7 +24,7 @@ PianoSystem::PianoSystem(float left, float top, float totalWidth)
     // load font used for labels (ensure the file path is correct at runtime)
     if (!font.loadFromFile("src/resources/fonts/ARIAL.TTF")) {
         std::cerr << "PianoSystem: failed to load font resources/fonts/ARIAL.TTF\n";
-        // continue — labels will not render but program won't crash
+        // continue
     }
 
     buildKeys();
@@ -36,7 +36,7 @@ void PianoSystem::loadSounds() {
         sf::SoundBuffer buf;
         if (!buf.loadFromFile(path)) {
             std::cerr << "PianoSystem: failed to load sound '" << path << "'\n";
-            // continue — missing sound won't crash, but won't play
+            // continue so missing sound won't crash, but won't play
             continue;
         }
         buffers[note] = std::move(buf);
@@ -49,16 +49,15 @@ void PianoSystem::buildKeys() {
     blackKeys.clear();
 
     // Geometry
-    const int whiteCount = 7; // C D E F G A B across one octave
+    const int whiteCount = 7; //keys
     float whiteW = width / static_cast<float>(whiteCount);
     float whiteH = 240.f;
 
-    // base white notes (left to right)
+    // base white notes
     std::vector<std::string> whiteOrder = {"C","D","E","F","G","A","B"};
     std::vector<std::pair<int,std::string>> blackInfo = {
         {0, "Csharp"},
         {1, "Dsharp"},
-        // skip between E-F
         {3, "Fsharp"},
         {4, "Gsharp"},
         {5, "Asharp"}
@@ -77,7 +76,7 @@ void PianoSystem::buildKeys() {
         whiteKeys.push_back(std::move(k));
     }
 
-    // create black keys (narrower, shorter, positioned between whites)
+    // create black keys (btwn whites)
     float blackW = whiteW * 0.6f;
     float blackH = whiteH * 0.62f;
 
@@ -117,7 +116,6 @@ void PianoSystem::playNote(const std::string& note) {
         it->second.play();
     } else {
         // silent if missing
-        // std::cerr << "No sound buffer for note: " << note << "\n";
     }
 }
 
@@ -180,7 +178,7 @@ void PianoSystem::handleEvent(sf::RenderWindow& window, const sf::Event& event) 
         }
     }
 
-    // Mouse move -> hover effects (optional)
+    // Mouse move for hover effects 
     if (event.type == sf::Event::MouseMoved) {
         sf::Vector2f worldPos = window.mapPixelToCoords({event.mouseMove.x, event.mouseMove.y});
         for (auto& bk : blackKeys) {
@@ -199,7 +197,7 @@ void PianoSystem::handleEvent(sf::RenderWindow& window, const sf::Event& event) 
 
     // Mouse release can clear pressed state (we also clear in update)
     if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left) {
-        // optionally keep visual for a short time; immediate clear:
+        // keep visual for a short time; immediate clear:
         for (auto& bk : blackKeys) if (bk.pressed) { bk.pressed = false; bk.rect.setFillColor(bk.blackColor); }
         for (auto& wk : whiteKeys) if (wk.pressed) { wk.pressed = false; wk.rect.setFillColor(wk.whiteColor); }
     }
@@ -216,7 +214,6 @@ std::string PianoSystem::getPressedNote(const sf::Event& event) {
 
 void PianoSystem::update(float dt) {
     // simple reset of pressed flags so press flashes for one frame
-    // if you want sustain, remove this or add timers
     for (auto& bk : blackKeys) {
         if (bk.pressed) {
             // keep pressed for a tiny bit then reset

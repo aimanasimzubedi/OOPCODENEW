@@ -24,7 +24,7 @@ private:
 
     ScreenID goTo = NONE;
 
-    // Cached result values
+    // intiial result values
     int finalScore = 0;
     float finalAccuracy = 0.f;
     int maxCombo = 0;
@@ -39,7 +39,6 @@ public:
     void update() override;
     void draw(sf::RenderWindow& window) override;
 
-    // optional setter (you already had it)
     void setResults(int score, float accuracy, int combo, float time);
 
     ScreenID nextScreen() override;

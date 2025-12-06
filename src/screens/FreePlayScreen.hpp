@@ -17,7 +17,7 @@ private:
 
     ScreenID goTo = NONE;
 
-    // REPLACED raw key vectors with Piano instance
+    // replaced raw key vectors with Piano instance
     PianoSystem piano;
 
 public:

@@ -28,22 +28,22 @@ class PianoSystem {
 public:
     PianoSystem(float left = 0.f, float top = 330.f, float totalWidth = 700.f);
 
-    // loads sounds and builds keys (called in ctor)
+    // loads sounds and builds keys
     void loadSounds();
     void buildKeys();
 
-    // event driven: call from your screen's event loop
+    // event driven: call from screen event loop
     void handleEvent(sf::RenderWindow& window, const sf::Event& event);
     // returns note name if key pressed, "" otherwise
     std::string getPressedNote(const sf::Event& event);
 
-    // update visuals / reset pressed flags if needed
+    // update visuals
     void update(float dt = 0.f);
 
     // draw keys (white then black)
     void draw(sf::RenderWindow& target) const;
 
-    // reset all key visuals to default (call when leaving a screen)
+    // reset all key visuals to default(called when leaving screen)
     void resetAllKeyColors();
 
     // helpers
@@ -52,12 +52,12 @@ public:
     const std::string* hitTestWhite(float px, float py);
 
 private:
-    // geometry / layout
+    // geometry
     float x;      // left origin
     float y;      // top origin of keys
     float width;  // total piano width
 
-    // keys (preserve order for drawing)
+    // keys to preserve order for drawing
     std::vector<PianoKey> whiteKeys;
     std::vector<PianoKey> blackKeys;
 
@@ -65,7 +65,7 @@ private:
     std::map<std::string, sf::SoundBuffer> buffers;
     std::map<std::string, sf::Sound> sounds;
 
-    // keyboard -> note mapping
+    // keyboard to note mapping
     std::unordered_map<sf::Keyboard::Key, std::string> keyMap;
 
     sf::Font font;

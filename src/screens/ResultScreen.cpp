@@ -91,7 +91,7 @@ void ResultScreen::setResults(int score, float accuracy, int combo, float time) 
     finalScore = score;
     finalAccuracy = accuracy;
     maxCombo = combo;
-    finalTime = time;   //
+    finalTime = time;   //time counts up
 
     scoreText.setString("Score: " + std::to_string(finalScore));
     accuracyText.setString("Accuracy: " + std::to_string((int)finalAccuracy) + "%");

@@ -31,7 +31,7 @@ WelcomeScreen::WelcomeScreen() {
     freeBtn  = Button({300, 70}, {200, 300}, font, "Free Play");
     exitBtn  = Button({300, 70}, {200, 400}, font, "Exit");
 
-    // Background music (optional)
+    // Background music
     if (bgMusic.openFromFile("src/resources/sounds/soft-piano.wav")) {
         bgMusic.setLoop(true);
         bgMusic.setVolume(30);

@@ -17,7 +17,7 @@ private:
 
     ScreenID goTo = NONE;
 
-    // Use Piano here too
+    // using Piano here too
     PianoSystem piano;
 
 public:

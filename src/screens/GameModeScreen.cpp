@@ -19,7 +19,7 @@ GameModeScreen::GameModeScreen()
     timerText.setFillColor(sf::Color::White);
     timerText.setPosition(500, 20);
 
-    // generate 5-note sequence
+    // generate 5 note sequence
     noteSequence = generateSequence(5);
 
     std::string seq = "Play: ";
@@ -29,12 +29,12 @@ GameModeScreen::GameModeScreen()
 
 std::vector<std::string> GameModeScreen::generateSequence(int length){
     std::vector<std::string> notes = {
-        "C", "C#",
-        "D", "D#",
+        "C", "Csharp",
+        "D", "Dsharp",
         "E",
-        "F", "F#",
-        "G", "G#",
-        "A", "A#",
+        "F", "Fsharp",
+        "G", "Gsharp",
+        "A", "Asharp",
         "B"
     };
     std::vector<std::string> seq;
@@ -58,7 +58,7 @@ void GameModeScreen::handleEvents(sf::RenderWindow& window){
         if (exitBtn.isClicked(window, event))
             goTo = WELCOME;
 
-        // 2. GO → start game
+        // 2. GO to start game
         if (!gameStarted && goBtn.isClicked(window, event)){
             gameStarted = true;
 
@@ -71,7 +71,7 @@ void GameModeScreen::handleEvents(sf::RenderWindow& window){
             return;
         }
 
-        // 3. DONE → stop BEFORE any piano input
+        // 3. DONE, stop BEFORE any piano input
         if (gameStarted && doneBtn.isClicked(window, event)){
             gameStarted = false;
 
@@ -105,7 +105,7 @@ void GameModeScreen::handleEvents(sf::RenderWindow& window){
                 score = (correctPresses * 100.0f) / noteSequence.size();
             }
 
-            // MOUSE input + scoring (fixed version)
+            // MOUSE input + scoring
             if (event.type == sf::Event::MouseButtonPressed){
                 sf::Vector2f worldPos = window.mapPixelToCoords(
                     { event.mouseButton.x, event.mouseButton.y });
